@@ -1,0 +1,846 @@
+/* Hallmark · genre: modern-minimal · macrostructure: app-sidebar (fixed by DESIGN.md) · design-system: DESIGN.md · designed-as-app · pre-emit critique: P5 H5 E4 S4 R4 V4 */
+
+/* Tokens do DESIGN.md. Tema escuro único. */
+:root {
+  --primary: #eaecef;
+  --secondary: #848e9c;
+  --tertiary: #f0b90b;
+  --neutral: #0b0e11;
+  --surface: #181a20;
+  --surface-2: #1e2129;
+  --line: #2b3139;
+  --line-strong: #3a414b;
+  --on-primary: #0b0e11;
+
+  --rounded-sm: 4px;
+  --rounded-md: 6px;
+  --rounded-lg: 10px;
+
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 32px;
+
+  --dur-fast: 160ms;
+  --dur-base: 240ms;
+  --dur-slow: 600ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  --shadow-card: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-lift: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 12px 32px rgba(0, 0, 0, 0.45);
+  --shadow-primary: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 1px 2px rgba(0, 0, 0, 0.4);
+
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+
+  color-scheme: dark;
+  color: var(--primary);
+  background: var(--neutral);
+  font: 0.95rem/1.5 var(--font-body);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  background: var(--neutral);
+  color: var(--primary);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--tertiary);
+  outline-offset: 2px;
+}
+
+h1,
+h2 {
+  margin: 0;
+  color: var(--primary);
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+h1 {
+  overflow-wrap: anywhere;
+  font-size: clamp(1.9rem, 2.6vw + 1rem, 2.6rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+h2 {
+  font-size: 1.0625rem;
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin: 0;
+}
+
+/* Layout: menu lateral fixo, conteúdo com respiro */
+.app {
+  display: grid;
+  grid-template-columns: 232px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.menu {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  background: var(--surface);
+  border-right: 1px solid var(--line);
+  padding: var(--space-md) var(--space-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: var(--space-sm);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.marca {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--rounded-sm);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Indicador da tela atual: um só elemento que desliza entre os itens */
+.menu-lista {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.menu-indicador {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--h, 40px);
+  border-radius: var(--rounded-md);
+  background: var(--neutral);
+  box-shadow: inset 2px 0 0 var(--primary);
+  transform: translateY(var(--y, 0px));
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.menu-item {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  white-space: nowrap;
+  background: none;
+  border: 0;
+  text-align: left;
+  padding: 0 12px;
+  border-radius: var(--rounded-md);
+  color: var(--secondary);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.menu-item:hover {
+  color: var(--primary);
+}
+
+.menu-item.on {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Grupos do menu: Trabalho e Administração */
+.menu-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.menu-grupo + .menu-grupo {
+  margin-top: var(--space-sm);
+}
+
+.menu-rotulo {
+  padding: 0 12px;
+  margin-bottom: 2px;
+  color: var(--secondary);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Perfil da pré-visualização, na base do menu */
+.menu-conta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: auto;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--line);
+}
+
+.menu-conta .meta {
+  margin: 0;
+  padding: 0 var(--space-sm);
+}
+
+.content {
+  padding: 40px var(--space-lg) var(--space-lg);
+  min-width: 0;
+}
+
+/* Cada tela entra com um leve deslize; o React troca a tela pela chave */
+.tela {
+  animation: entrar var(--dur-base) var(--ease-out) both;
+}
+
+@keyframes entrar {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.page-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.page-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.meta {
+  color: var(--secondary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  margin-top: var(--space-sm);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: var(--space-md);
+  align-items: start;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--rounded-lg);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-card);
+}
+
+.card h2 {
+  margin-bottom: var(--space-sm);
+}
+
+/* Status: rótulo em mono, sem cor de acento */
+.status {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--secondary);
+  border: 1px solid var(--line);
+  border-radius: var(--rounded-sm);
+  padding: 4px 10px;
+}
+
+.status-concluida,
+.status-concluido {
+  color: var(--primary);
+  border-color: var(--line-strong);
+}
+
+.status-pendente {
+  border-style: dashed;
+}
+
+/* Indicadores no topo das telas */
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  gap: var(--space-md);
+}
+
+/* Coluna de seções de uma tela, com o mesmo respiro entre elas */
+.pilha {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.kpi {
+  min-width: 0;
+  padding: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--rounded-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.kpi .rotulo {
+  margin-bottom: 0;
+}
+
+.kpi-valor {
+  display: block;
+  margin-top: var(--space-sm);
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+/* Editor */
+.doc {
+  width: 100%;
+  min-height: 420px;
+  resize: vertical;
+  padding: var(--space-md);
+  background: var(--neutral);
+  border: 1px solid var(--line);
+  border-radius: var(--rounded-md);
+  font: 0.95rem/1.7 var(--font-body);
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.doc:hover,
+.doc:focus {
+  border-color: var(--line-strong);
+}
+
+/* Botões: uma ação amarela por tela (btn-primary). Os demais são neutros. */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 12px 20px;
+  white-space: nowrap;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: var(--rounded-md);
+  color: var(--primary);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.btn:hover {
+  border-color: var(--secondary);
+  background: var(--surface-2);
+}
+
+.btn:active {
+  background: var(--line);
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn:disabled:hover {
+  border-color: var(--line);
+  background: transparent;
+}
+
+.btn-primary {
+  background: var(--tertiary);
+  border-color: var(--tertiary);
+  color: var(--on-primary);
+  font-weight: 600;
+  box-shadow: var(--shadow-primary);
+}
+
+.btn-primary:hover {
+  background: var(--tertiary);
+  border-color: var(--tertiary);
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  background: var(--tertiary);
+  filter: brightness(0.92);
+  transform: translateY(0);
+}
+
+/* Pedido de ajuste */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: var(--space-sm);
+}
+
+.chip {
+  white-space: nowrap;
+  padding: 6px 10px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: var(--rounded-sm);
+  color: var(--secondary);
+  font-size: 0.8rem;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.chip:hover {
+  color: var(--primary);
+  border-color: var(--secondary);
+  background: var(--surface-2);
+}
+
+.chip:active {
+  background: var(--line);
+}
+
+.history {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: var(--space-sm);
+}
+
+.bubble {
+  padding: 10px 12px;
+  background: var(--neutral);
+  border: 1px solid var(--line);
+  border-radius: var(--rounded-md);
+  font-size: 0.9rem;
+  animation: entrar var(--dur-base) var(--ease-out) both;
+}
+
+.bubble-me {
+  align-self: flex-end;
+  max-width: 90%;
+  border-color: var(--secondary);
+}
+
+.msg {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.msg input {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 12px;
+  background: var(--neutral);
+  border: 1px solid var(--line);
+  border-radius: var(--rounded-md);
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.msg input:hover,
+.msg input:focus {
+  border-color: var(--line-strong);
+}
+
+.msg .btn {
+  padding: 10px 14px;
+}
+
+.hint {
+  color: var(--secondary);
+  font-size: 0.82rem;
+  margin-top: var(--space-sm);
+}
+
+/* Uso: a barra cresce da esquerda ao abrir a tela */
+.meter {
+  height: 6px;
+  background: var(--line);
+  border-radius: var(--rounded-sm);
+  overflow: hidden;
+  margin: var(--space-sm) 0 4px;
+}
+
+.meter span {
+  display: block;
+  height: 100%;
+  background: var(--primary);
+  transform-origin: left center;
+  animation: medidor var(--dur-slow) var(--ease-out) both;
+}
+
+@keyframes medidor {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.toast {
+  position: fixed;
+  bottom: var(--space-md);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 16px;
+  background: var(--primary);
+  color: var(--on-primary);
+  border-radius: var(--rounded-md);
+  font-size: 0.9rem;
+  box-shadow: var(--shadow-lift);
+  animation: toast-entrar var(--dur-base) var(--ease-out) both;
+}
+
+@keyframes toast-entrar {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+}
+
+/* Telas de lista e configuração */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.busca {
+  position: relative;
+  display: flex;
+  flex: 1 1 240px;
+  min-width: 0;
+}
+
+.busca .campo {
+  flex: 1;
+  padding-right: 40px;
+}
+
+.tecla {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 1px 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--rounded-sm);
+  color: var(--secondary);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  pointer-events: none;
+}
+
+.campo {
+  min-height: 44px;
+  padding: 10px 12px;
+  background: var(--neutral);
+  border: 1px solid var(--line);
+  border-radius: var(--rounded-md);
+  min-width: 0;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.campo:hover,
+.campo:focus {
+  border-color: var(--line-strong);
+}
+
+.rotulo {
+  display: block;
+  color: var(--secondary);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.campo-largo {
+  flex: 1 1 240px;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+/* Formulário em colunas que quebram no celular */
+.campos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: var(--space-md);
+}
+
+/* Erro sem cor de alerta, que o sistema não tem: borda e texto em mono */
+.erro {
+  margin-top: var(--space-md);
+  padding: 8px 12px;
+  border-left: 2px solid var(--primary);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+/* Botão que é rótulo de arquivo: o input cobre o botão e o foco aparece nele */
+.arquivo-botao {
+  position: relative;
+}
+
+.arquivo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.arquivo-botao:focus-within {
+  outline: 2px solid var(--tertiary);
+  outline-offset: 2px;
+}
+
+/* shortcut: tabela com largura mínima e rolagem própria no celular, sem estourar a página */
+.tabela-wrap {
+  overflow-x: auto;
+}
+
+.tabela {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+}
+
+.tabela th,
+.tabela td {
+  text-align: left;
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.tabela th {
+  color: var(--secondary);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.tabela tbody tr {
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.tabela tbody tr:hover {
+  background: var(--surface-2);
+}
+
+.caso-link {
+  padding: 0;
+  background: none;
+  border: 0;
+  text-align: left;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.caso-link:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--secondary);
+  text-underline-offset: 3px;
+}
+
+.lista-tipos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.item-tipo {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: var(--rounded-md);
+  color: var(--primary);
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.item-tipo:hover,
+.item-tipo.on {
+  border-color: var(--secondary);
+  background: var(--surface-2);
+}
+
+.item-tipo:active {
+  background: var(--line);
+}
+
+.aviso {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--line);
+}
+
+/* Telas estreitas empilham as colunas */
+@media (max-width: 68.75rem) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Celular: menu vira barra inferior */
+@media (max-width: 860px) {
+  .app {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .menu {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    flex-direction: row;
+    padding: 6px;
+    border-right: 0;
+    border-top: 1px solid var(--line);
+    z-index: 5;
+    gap: 0;
+    overflow-x: auto;
+  }
+
+  .brand,
+  .menu-indicador {
+    display: none;
+  }
+
+  .menu-lista {
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 0;
+  }
+
+  .menu-item {
+    justify-content: center;
+    height: auto;
+    min-height: 44px;
+    font-size: 0.75rem;
+    padding: 6px 4px;
+    text-align: center;
+  }
+
+  .menu-item.on {
+    background: var(--neutral);
+    box-shadow: inset 0 2px 0 var(--primary);
+  }
+
+  /* Na barra de baixo todas as telas ficam numa linha só, com rolagem da própria barra */
+  .menu-rotulo,
+  .menu-conta {
+    display: none;
+  }
+
+  .menu-grupo {
+    display: contents;
+  }
+
+  .menu-item {
+    flex: none;
+  }
+
+  .content {
+    padding: var(--space-md) var(--space-md) 96px;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Quem pede menos movimento não perde informação: só some a animação */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .btn:active,
+  .btn-primary:hover,
+  .btn-primary:active {
+    transform: none;
+  }
+}
